@@ -1,9 +1,13 @@
 import { createStore } from 'vuex'
-import cochesStore from './coaches/index'
+import coachesStore from './coaches/index'
 import requestStore from './requests/index'
+console.log(coachesStore);
 const store = createStore({
-    cochesStore,
-    requestStore
+    modules:{
+        coachesStore,
+        requestStore
+    }
+
 })
 
 export default store;
