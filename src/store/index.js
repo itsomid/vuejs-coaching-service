@@ -3,9 +3,19 @@ import coachesStore from './coaches/index'
 import requestStore from './requests/index'
 console.log(coachesStore);
 const store = createStore({
-    modules:{
+    modules: {
         coachesStore,
         requestStore
+    },
+    state() {
+        return {
+            userId: 'c3'
+        }
+    },
+    getters: {
+        userId(state) {
+            return state.userId
+        }
     }
 
 })

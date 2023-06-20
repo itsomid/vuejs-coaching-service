@@ -1,7 +1,7 @@
 export default {
   namespaced: true,
   state() {
-    return{
+    return {
       coaches: [
         {
           id: 'c1',
@@ -21,19 +21,42 @@ export default {
             'I am Julie and as a senior developer in a big tech company, I can help you get your first job or progress in your current role.',
           hourlyRate: 30
         }
-  
+
       ]
     }
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    REGISTER_COACH(state, payload) {
+      state.coaches.push(payload)
+      console.log(payload)
+    }
+  },
+  actions: {
+    register(context, data) {
+      console.log(context);
+      const coachData = {
+        id: context.rootGetters.userId,
+        // id: new Date().toISOString(),
+        firstName: data.first,
+        lastName: data.last,
+        description: data.desc,
+        areas: data.areas,
+        hourlyRate: data.rate
+      }
+      context.commit('REGISTER_COACH', coachData)
+    }
+  },
   getters: {
     coaches(state) {
-    
       return state.coaches
     },
     hasCoaches(state) {
       return state.coaches && state.coaches.length > 0
+    },
+    isCoach(state, getters, rootState ,rootGetters) {
+      const coaches = getters.coaches
+      const userId = rootGetters.userId
+      return coaches.some(coach => coach.id === userId)
     }
   }
 }
