@@ -11,7 +11,7 @@
         <h2>Interested? Reach out now!</h2>
         <base-button link :to="contactLink">Contact</base-button>
       </header>
-      <!-- <router-view></router-view> -->
+      <router-view></router-view>
     </base-card>
   </section>
   <section>
@@ -43,7 +43,7 @@ export default {
         return this.selectedCoach.hourlyRate
     },
     contactLink(){
-        return this.$route.path + '/' + this.id + '/contact'
+      return this.$route.path + '/' + this.id + '/contact';
     },
     areas(){
         return this.selectedCoach.areas
