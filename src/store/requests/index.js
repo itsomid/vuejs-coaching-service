@@ -2,13 +2,14 @@ export default {
     namespaced: true,
     state() {
         return {
-            requsets: []
+            requests: []
         }
 
     },
     mutations: {
         ADD_REQUEST(state, payload) {
-            state.requsets.push(payload)
+            state.requests.push(payload)
+       
         }
     },
     actions: {
@@ -22,5 +23,12 @@ export default {
             context.commit('ADD_REQUEST', newRequest)
         }
     },
-    getters: {}
+    getters: {
+        requests(state){
+            return state.requests
+        },
+        hasRequests(state){
+            return state.requests && state.requests.length > 0
+        }
+    }
 }
