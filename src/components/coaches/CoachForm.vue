@@ -115,6 +115,8 @@ export default {
     submitForm() {
       this.validateForm();
       if (!this.isFormValid) {
+      
+        console.log('something is wrong!');
         return;
       }
       const formData = {
@@ -124,6 +126,7 @@ export default {
         rate: this.rate.val,
         areas: this.areas.val,
       };
+
       this.$emit('save-data', formData);
     },
     clearInputValidity(input) {

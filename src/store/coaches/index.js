@@ -43,6 +43,8 @@ export default {
         areas: data.areas,
         hourlyRate: data.rate
       }
+
+      fetch('https://vue-http-demo-258c8-default-rtdb.europe-west1.firebasedatabase.app/coaches.json')
       context.commit('REGISTER_COACH', coachData)
     }
   },
