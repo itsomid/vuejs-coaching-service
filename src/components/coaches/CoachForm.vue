@@ -67,23 +67,23 @@ export default {
   data() {
     return {
       firstName: {
-        val: '',
+        val: 'Omid',
         isValid: true,
       },
       lastName: {
-        val: '',
+        val: 'Shabani',
         isValid: true,
       },
       description: {
-        val: '',
+        val: '121',
         isValid: true,
       },
       rate: {
-        val: null,
+        val: 12,
         isValid: true,
       },
       areas: {
-        val: [],
+        val: ['frontend'],
         isValid: true,
       },
       isFormValid: true,

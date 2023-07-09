@@ -1,3 +1,4 @@
+
 export default {
   namespaced: true,
   state() {
@@ -28,14 +29,16 @@ export default {
   mutations: {
     REGISTER_COACH(state, payload) {
       state.coaches.push(payload)
-      console.log(payload)
+      console.log('coaches', state.coaches)
+    },
+    SET_COACHES(state, payload) {
+      state.coaches = payload
     }
   },
   actions: {
-    register(context, data) {
-      console.log(context);
+    async register(context, data) {
+      const userId = context.rootGetters.userId;
       const coachData = {
-        id: context.rootGetters.userId,
         // id: new Date().toISOString(),
         firstName: data.first,
         lastName: data.last,
@@ -43,9 +46,40 @@ export default {
         areas: data.areas,
         hourlyRate: data.rate
       }
+      const response = await fetch(`https://vue-http-demo-258c8-default-rtdb.europe-west1.firebasedatabase.app/coaches/${userId}.json`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(coachData),
+      });
 
-      fetch('https://vue-http-demo-258c8-default-rtdb.europe-west1.firebasedatabase.app/coaches.json')
-      context.commit('REGISTER_COACH', coachData)
+      if (!response.ok) {
+        //error
+      }
+
+      context.commit('REGISTER_COACH', {
+        id: userId,
+        ...coachData,
+      })
+    },
+    async loadCoaches(context) {
+      const response = await fetch('https://vue-http-demo-258c8-default-rtdb.europe-west1.firebasedatabase.app/coaches.json')
+      const responseData = await response.json()
+      const coaches = []
+      for(const key in responseData) {
+        const coachData = {
+          id: key,
+          firstName: responseData[key].firstName,
+          lastName: responseData[key].lastName,
+          description: responseData[key].description,
+          areas: responseData[key].areas,
+          hourlyRate: responseData[key].hourlyRate
+        }
+        coaches.push(coachData)
+      }
+      context.commit('SET_COACHES', coaches)
+      console.log(context.state);
     }
   },
   getters: {
@@ -55,7 +89,7 @@ export default {
     hasCoaches(state) {
       return state.coaches && state.coaches.length > 0
     },
-    isCoach(_state, getters, _rootState ,rootGetters) {
+    isCoach(_state, getters, _rootState, rootGetters) {
       const coaches = getters.coaches
       const userId = rootGetters.userId
       return coaches.some(coach => coach.id === userId)
