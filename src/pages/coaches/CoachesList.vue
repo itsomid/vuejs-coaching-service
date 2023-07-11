@@ -1,5 +1,7 @@
 <template>
-  <base-dialog></base-dialog>
+  <base-dialog :show="!!error" @close="closeModal" title="An error occoured!">
+    <p>{{ error }}</p>
+  </base-dialog>
   <section>
     <coach-filter @change-filter="setFilter"></coach-filter>
   </section>
@@ -42,6 +44,7 @@ export default {
         backend: true,
         career: true,
       },
+      error: null,
     };
   },
 
@@ -81,11 +84,17 @@ export default {
     },
     loadCoaches() {
       this.isLoading = true;
-      this.$store.dispatch('coachesStore/loadCoaches').then(() => {
-        this.isLoading = false;
-      }).catch((error)=>{
-        console.log(error)
-      });
+      this.$store
+        .dispatch('coachesStore/loadCoaches')
+        .then(() => {
+          this.isLoading = false;
+        })
+        .catch((error) => {
+          this.error = error.message || 'Something Went wrong!';
+        });
+    },
+    closeModal() {
+      this.error = null;
     },
   },
 };
