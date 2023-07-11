@@ -1,4 +1,5 @@
 <template>
+  <base-dialog></base-dialog>
   <section>
     <coach-filter @change-filter="setFilter"></coach-filter>
   </section>
@@ -31,7 +32,7 @@
 <script>
 import coacheItem from '../../components/coaches/CoachItem.vue';
 import CoachFilter from '../../components/coaches/CoachFilter.vue';
-import BaseSpinner from '../../components/ui/BaseSpinner.vue';
+
 export default {
   data() {
     return {
@@ -47,7 +48,6 @@ export default {
   components: {
     coacheItem,
     CoachFilter,
-    BaseSpinner
   },
   computed: {
     isCoach() {
@@ -83,6 +83,8 @@ export default {
       this.isLoading = true;
       this.$store.dispatch('coachesStore/loadCoaches').then(() => {
         this.isLoading = false;
+      }).catch((error)=>{
+        console.log(error)
       });
     },
   },
