@@ -39,10 +39,10 @@ export default{
             }
             const formData = {
                 email: this.email,
-                message: this.message
+                message: this.message,
+                coachId : this.$route.params.id
             }
-            formData.coachId = this.$route.params.id
-            console.log(formData)
+        
             this.$store.dispatch('requestStore/contactCoach',formData)
             this.$router.replace('/coaches')
             

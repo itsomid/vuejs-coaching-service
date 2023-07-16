@@ -12,13 +12,27 @@ export default {
         }
     },
     actions: {
-        contactCoach(context, payload) {
+       async contactCoach(context, payload) {
+        const timestamp = new Date().getTime();
+        const randomString = Math.random().toString(36).substring(2, 8);
+        const uniqueName = `${timestamp}-${randomString}`;
             const newRequest = {
-                id: new Date().toISOString,
                 coachId: payload.coachId,
                 email: payload.email,
                 message: payload.message
             }
+            const response = await fetch(`https://vue-http-demo-258c8-default-rtdb.europe-west1.firebasedatabase.app/requests/${payload.coachId}/${uniqueName}.json`,{
+                method: 'PUT',
+                body: JSON.stringify(newRequest)
+            })
+    
+            const responseData = await response.json()
+            if(!response.ok){
+                const error = new Error(responseData.message || 'Failed to send request!')
+                throw error;
+            }
+   
+            newRequest.id = uniqueName
             context.commit('ADD_REQUEST', newRequest)
         }
     },
