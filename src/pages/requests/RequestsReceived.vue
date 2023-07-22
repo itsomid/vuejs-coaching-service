@@ -1,4 +1,5 @@
 <template>
+  <base-dialog :show="!!error" title="An error accured!" @close="handleError"><p>{{ error }}</p></base-dialog>
   <section>
     <base-card>
       <header>
@@ -24,6 +25,7 @@ export default {
     return {
       isLoading: false,
       allRequests: [],
+      error:null
     };
   },
   components: {
@@ -47,10 +49,15 @@ export default {
       try {
         await this.$store.dispatch('requestStore/fetchRequest');
       } catch (error) {
-        console.log(error);
+      
+        this.error = error.message
+        console.log(this.error);
       }
       this.isLoading = false;
     },
+    handleError(){
+      this.error = null
+    }
   },
 };
 </script>
