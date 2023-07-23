@@ -3,6 +3,7 @@ export default {
   namespaced: true,
   state() {
     return {
+      lastFetch: null,
       coaches: [
         {
           id: 'c1',
@@ -22,7 +23,6 @@ export default {
             'I am Julie and as a senior developer in a big tech company, I can help you get your first job or progress in your current role.',
           hourlyRate: 30
         }
-
       ]
     }
   },
@@ -33,6 +33,9 @@ export default {
     },
     SET_COACHES(state, payload) {
       state.coaches = payload
+    },
+    SET_FETCH_TIME_STAMP(state){
+      state.lastFetch = new Date().getTime()
     }
   },
   actions: {
@@ -63,7 +66,10 @@ export default {
         ...coachData,
       })
     },
-    async loadCoaches(context) {
+    async loadCoaches(context, payload) {
+      if(!context.getters.shouldUpdate && !payload.forceRefresh){
+        return context.getters.coaches;
+      }
       const response = await fetch('https://vue-http-demo-258c8-default-rtdb.europe-west1.firebasedatabase.app/coaches.json')
       const responseData = await response.json()
       if(!response.ok){
@@ -84,8 +90,8 @@ export default {
         coaches.push(coachData)
       }
       context.commit('SET_COACHES', coaches)
-      console.log(context.state);
-    }
+      context.commit('SET_FETCH_TIME_STAMP')
+    },
   },
   getters: {
     coaches(state) {
@@ -98,6 +104,13 @@ export default {
       const coaches = getters.coaches
       const userId = rootGetters.userId
       return coaches.some(coach => coach.id === userId)
+    },
+    shouldUpdate(state){
+      if(!state.lastFetch){
+        return true;
+      }
+      const newTime = new Date().getTime()
+      return (newTime - state.lastFetch) / 1000 > 60
     }
   }
 }
