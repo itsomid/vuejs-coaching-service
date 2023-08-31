@@ -3,9 +3,9 @@
     <base-dialog :show="!!error" title="An error occurred" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
-    <!-- <base-dialog :show="isLoading" title="Authenticating..." fixed>
+    <base-dialog :show="isLoading" title="Authenticating..." fixed>
       <base-spinner></base-spinner>
-    </base-dialog> -->
+    </base-dialog>
     <base-card>
       <form @submit.prevent="submitForm">
         <div class="form-control">
@@ -38,7 +38,7 @@ export default {
       formIsValid: true,
       mode: 'login',
       error: null,
-      isLoading: false
+      isLoading: false,
     };
   },
   computed: {
@@ -65,30 +65,36 @@ export default {
         this.mode = 'login';
       }
     },
-    submitForm() {
-        this.formIsValid = true
+    handleError(){
+      this.error = null
+    },
+    async submitForm() {
+      this.formIsValid = true;
       if (
         !this.email ||
         !this.email.includes('@') ||
         this.password.length < 6
       ) {
-        this.formIsValid = false
+        this.formIsValid = false;
         return;
       }
-      if(this.mode === 'login'){
-       ///
-      }else{
-        this.$store.dispatch('authStore/signup',{
+
+      this.isLoading = true
+
+      try {
+        if (this.mode === 'login') {
+          ///
+        } else {
+          await this.$store.dispatch('authStore/signup', {
             email: this.email,
-            password: this.password
-        }).then(()=>{
-          alert(2)
-        }).catch((error)=>{
-          this.error = error
-          console.log(!!this.error);
-          
-        })
+            password: this.password,
+          });
+        }
+      } catch (err) {
+        this.error = err || 'Failed to Authenticate, plase try later.'
       }
+
+      this.isLoading = false
     },
   },
 };
