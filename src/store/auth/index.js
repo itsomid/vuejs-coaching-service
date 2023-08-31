@@ -1,5 +1,20 @@
 export default {
     namespaced: true,
+    state(){
+        return{
+           token: null,
+           userId: null,
+           tokenExpiration: null
+        }
+    },
+    mutations:{
+        SET_USER(state, payload){
+          state.token = payload.token
+          state.userId = payload.userId
+          state.tokenExpiration = payload.tokenExpiration
+
+        }
+    },
     actions: {
         login() {
 
@@ -23,7 +38,11 @@ export default {
                 const error = new Error(responseData.error.message || 'Failed to Authenticated')
                 throw error;
             }
-
+            context.commit('SET_USER',{
+                token: responseData.token,
+                userId: responseData.localId,
+                tokenExpiration: responseData.expiresIn
+            })
             console.log(responseData);
             
         }

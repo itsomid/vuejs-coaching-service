@@ -37,7 +37,8 @@ export default {
       password: '',
       formIsValid: true,
       mode: 'login',
-      error: ''
+      error: null,
+      isLoading: false
     };
   },
   computed: {
