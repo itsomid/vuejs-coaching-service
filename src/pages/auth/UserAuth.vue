@@ -3,9 +3,9 @@
     <base-dialog :show="!!error" title="An error occurred" @close="handleError">
       <p>{{ error }}</p>
     </base-dialog>
-    <base-dialog :show="isLoading" title="Authenticating..." fixed>
+    <!-- <base-dialog :show="isLoading" title="Authenticating..." fixed>
       <base-spinner></base-spinner>
-    </base-dialog>
+    </base-dialog> -->
     <base-card>
       <form @submit.prevent="submitForm">
         <div class="form-control">
@@ -30,41 +30,67 @@
 </template>
 
 <script>
-    export default{
-        data(){
-            return{
-                email: '',
-                password: '',
-                formIsValid: true,
-                mode: 'login'
-            }
-        },
-        computed:{
-            submitButtonCaption(){
-                if(this.mode === 'login'){
-                    return 'Login'
-                }else{
-                    return 'Sign Up'
-                }
-            },
-            switchModeButtonCaption(){
-                if(this.mode === 'login'){
-                    return 'Sign Up instead'
-                }else{
-                    return 'Login Instead'
-                }  
-            }
-        },
-        methods:{
-            switchAuthMode(){
-                if(this.mode === 'login'){
-                    this.mode = 'signup'
-                }else{
-                    this.mode = 'login'
-                }
-            }
-        }
-    }
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      formIsValid: true,
+      mode: 'login',
+      error: ''
+    };
+  },
+  computed: {
+    submitButtonCaption() {
+      if (this.mode === 'login') {
+        return 'Login';
+      } else {
+        return 'Sign Up';
+      }
+    },
+    switchModeButtonCaption() {
+      if (this.mode === 'login') {
+        return 'Sign Up instead';
+      } else {
+        return 'Login Instead';
+      }
+    },
+  },
+  methods: {
+    switchAuthMode() {
+      if (this.mode === 'login') {
+        this.mode = 'signup';
+      } else {
+        this.mode = 'login';
+      }
+    },
+    submitForm() {
+        this.formIsValid = true
+      if (
+        !this.email ||
+        !this.email.includes('@') ||
+        this.password.length < 6
+      ) {
+        this.formIsValid = false
+        return;
+      }
+      if(this.mode === 'login'){
+       ///
+      }else{
+        this.$store.dispatch('authStore/signup',{
+            email: this.email,
+            password: this.password
+        }).then(()=>{
+          alert(2)
+        }).catch((error)=>{
+          this.error = error
+          console.log(!!this.error);
+          
+        })
+      }
+    },
+  },
+};
 </script>
 <style scoped>
 form {
