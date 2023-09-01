@@ -65,8 +65,8 @@ export default {
         this.mode = 'login';
       }
     },
-    handleError(){
-      this.error = null
+    handleError() {
+      this.error = null;
     },
     async submitForm() {
       this.formIsValid = true;
@@ -78,23 +78,23 @@ export default {
         this.formIsValid = false;
         return;
       }
+      this.isLoading = true;
 
-      this.isLoading = true
-
+      const payloadAction = {
+        email: this.email,
+        password: this.password,
+      };
       try {
         if (this.mode === 'login') {
-          ///
+          await this.$store.dispatch('authStore/login', payloadAction);
         } else {
-          await this.$store.dispatch('authStore/signup', {
-            email: this.email,
-            password: this.password,
-          });
+          await this.$store.dispatch('authStore/signup',payloadAction);
         }
       } catch (err) {
-        this.error = err || 'Failed to Authenticate, plase try later.'
+        this.error = err || 'Failed to Authenticate, plase try later.';
       }
 
-      this.isLoading = false
+      this.isLoading = false;
     },
   },
 };
