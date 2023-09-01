@@ -52,10 +52,11 @@ export default {
 
       try {
         await this.$store.dispatch('requestStore/fetchRequest');
+
       } catch (error) {
-        this.error = error.message;
-        console.log(this.error);
+        this.error = error;
       }
+
       this.isLoading = false;
     },
     handleError() {

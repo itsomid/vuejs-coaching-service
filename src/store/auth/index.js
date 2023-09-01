@@ -35,7 +35,7 @@ export default {
                 throw error
             }
             context.commit('SET_USER',{
-                token: responseData.token,
+                token: responseData.idToken,
                 userId: responseData.localId,
                 tokenExpiration: responseData.expiresIn
             })
@@ -61,7 +61,7 @@ export default {
                 throw error;
             }
             context.commit('SET_USER', {
-                token: responseData.token,
+                token: responseData.idToken,
                 userId: responseData.localId,
                 tokenExpiration: responseData.expiresIn
             })
@@ -72,6 +72,9 @@ export default {
     getters: {
         userId(state) {
             return state.userId
+        },
+        token(state){
+            return state.token
         }
     }
 }

@@ -9,12 +9,7 @@ const store = createStore({
         coachesStore,
         requestStore,
         authStore
-    },
-    state() {
-        return {
-            userId: 'c3'
-        }
-    },
+    }
  
 
 })

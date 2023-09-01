@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 export default {
   namespaced: true,
   state() {
@@ -40,7 +40,7 @@ export default {
   },
   actions: {
     async register(context, data) {
-      const userId = context.rootGetters.userId;
+      const userId = context.rootGetters['authStore/userId'];
       const coachData = {
         // id: new Date().toISOString(),
         firstName: data.first,
@@ -49,16 +49,24 @@ export default {
         areas: data.areas,
         hourlyRate: data.rate
       }
-      const response = await fetch(`https://vue-http-demo-258c8-default-rtdb.europe-west1.firebasedatabase.app/coaches/${userId}.json`, {
+    
+      const token = context.rootGetters['authStore/token']
+      // console.log(token,context);
+    
+
+      const response = await fetch(`https://vue-http-demo-258c8-default-rtdb.europe-west1.firebasedatabase.app/coaches/${userId}.json?auth=`+token, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(coachData),
       });
-
+      const responseData = await response.json()
+      console.log(responseData);
+      
       if (!response.ok) {
-        //error
+        const error = new Error(responseData.error || 'Failed to Register coach')
+        throw error
       }
 
       context.commit('REGISTER_COACH', {
