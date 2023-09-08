@@ -115,7 +115,6 @@ export default {
     submitForm() {
       this.validateForm();
       if (!this.isFormValid) {
-      
         console.log('something is wrong!');
         return;
       }

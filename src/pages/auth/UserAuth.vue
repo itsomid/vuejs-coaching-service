@@ -87,6 +87,7 @@ export default {
       try {
         if (this.mode === 'login') {
           await this.$store.dispatch('authStore/login', payloadAction);
+          this.$router.push('/coaches')
         } else {
           await this.$store.dispatch('authStore/signup',payloadAction);
         }
