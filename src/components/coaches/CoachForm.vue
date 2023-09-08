@@ -57,7 +57,7 @@
         <label for="career">Career Advisory</label>
       </div>
     </div>
-    <P v-if="!isFormValid">form is invalid, please correct above errors</P>
+    <p v-if="!isFormValid">form is invalid, please correct above errors</p>
     <base-button>Register</base-button>
   </form>
 </template>

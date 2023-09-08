@@ -1,5 +1,6 @@
 <template>
-  <base-dialog :show="!!error" title="An error occurred" @close="handleError">
+  <div>
+    <base-dialog :show="!!error" title="An error occurred" @close="handleError">
     <p>{{ error }}</p>
   </base-dialog>
   <section>
@@ -8,6 +9,8 @@
       <coach-form @save-data="saveData"></coach-form>
     </base-card>
   </section>
+  </div>
+  
 </template>
 
 <script>
@@ -17,25 +20,25 @@ export default {
   components: {
     CoachForm,
   },
-  data(){
-    return{
-      error: null
-    }
+  data() {
+    return {
+      error: null,
+    };
   },
   methods: {
     async saveData(data) {
       try {
         await this.$store.dispatch('coachesStore/register', data);
- 
+        this.$router.push('/coaches');
       } catch (err) {
-        this.error = err
+        this.error = err;
+        console.error(this.error); // Log the error message
       }
-      this.$router.push('/coaches');
-     
     },
-    handleError(){
-      this.error = null
-    }
+    handleError() {
+      this.error = null;
+         this.$router.push('/coaches');
+    },
   },
 };
 </script>

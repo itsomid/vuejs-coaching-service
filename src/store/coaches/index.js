@@ -62,11 +62,17 @@ export default {
         body: JSON.stringify(coachData),
       });
       const responseData = await response.json()
-      console.log(responseData);
-      
+    
       if (!response.ok) {
-        const error = new Error(responseData.error || 'Failed to Register coach')
-        throw error
+        console.log(response);
+        if(response.status === 401){
+          const error = new Error('please login to register new coach')
+          throw error
+        }else{
+          const error = new Error(responseData.error || 'Failed to Register coach')
+          throw error
+        }
+   
       }
 
       context.commit('REGISTER_COACH', {

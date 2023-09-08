@@ -6,7 +6,9 @@
       </h1>
       <ul>
         <li>
-          <router-link to="/coaches">All Coaches</router-link>
+          <router-link :to="{ name: 'coachList' }">
+            Coach List
+          </router-link>
         </li>
         <li>
           <router-link to="/requests">Requests</router-link>
