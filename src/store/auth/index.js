@@ -67,6 +67,13 @@ export default {
             })
             console.log(responseData);
 
+        },
+        logout(context){
+            context.commit('SET_USER',{
+                token: null,
+                userId: null,
+                tokenExpiration: null
+            })
         }
     },
     getters: {

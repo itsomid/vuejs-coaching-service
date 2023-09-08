@@ -10,13 +10,31 @@
             Coach List
           </router-link>
         </li>
-        <li>
-          <router-link to="/requests">Requests</router-link>
+        <li >
+          <router-link v-if="isLoggedIn" to="/requests">Requests</router-link>
+          <router-link v-else to="/auth">Login</router-link>
+        </li>
+        <li v-if="isLoggedIn">
+          <base-button @click="logout">Logout</base-button>
         </li>
       </ul>
     </nav>
   </header>
 </template>
+<script>
+export default{
+  computed:{
+    isLoggedIn(){
+      return this.$store.getters['authStore/isAuthenticated']
+    }
+  },
+  methods:{
+    logout(){
+      this.$store.dispatch('authStore/logout')
+    }
+  }
+}
+</script>
 
 <style scoped>
 header {
