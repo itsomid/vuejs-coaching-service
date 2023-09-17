@@ -87,10 +87,12 @@ export default {
       try {
         if (this.mode === 'login') {
           await this.$store.dispatch('authStore/login', payloadAction);
-          this.$router.push('/coaches')
         } else {
-          await this.$store.dispatch('authStore/signup',payloadAction);
+          await this.$store.dispatch('authStore/signup', payloadAction);
         }
+        const redirectUrl = '/coaches/' + (this.$route.query.redirect || '');
+        
+        this.$router.replace(redirectUrl);
       } catch (err) {
         this.error = err || 'Failed to Authenticate, plase try later.';
       }
