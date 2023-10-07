@@ -31,6 +31,7 @@ export default{
   methods:{
     logout(){
       this.$store.dispatch('authStore/logout')
+      this.$router.replace({name:'coachList'})
     }
   }
 }
