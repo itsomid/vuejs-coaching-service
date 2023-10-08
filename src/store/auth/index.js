@@ -4,14 +4,14 @@ export default {
         return {
             token: null || localStorage.getItem('token'),
             userId: null ||  localStorage.getItem('userId'),
-            tokenExpiration: null
+    
         }
     },
     mutations: {
         SET_USER(state, payload) {
             state.token = payload.token
             state.userId = payload.userId
-            state.tokenExpiration = payload.tokenExpiration
+
         }
     },
     actions: {
@@ -50,22 +50,34 @@ export default {
                 const error = new Error(responseData.error.message || 'Failed to Authenticated')
                 throw error
             }
+
+            // const expireIn = +responseData.expiresIn * 1000
+            const expireIn = 5000
+            const expirationDate = expireIn + new Date().getTime()
+            
             localStorage.setItem('token',responseData.idToken)
             localStorage.setItem('userId',responseData.localId)
+            localStorage.setItem('tokenExpiration',expirationDate)
+
+            const timer = setTimeout(function(){
+                context.dispatch('logout')
+            },5000)
 
             context.commit('SET_USER',{
                 token: responseData.idToken,
                 userId: responseData.localId,
-                tokenExpiration: responseData.expiresIn
             })
-
+            
             console.log(responseData);
         },
         logout(context){
+            localStorage.removeItem('token')
+            localStorage.removeItem('userId')
+            localStorage.removeItem('tokenExpiration')
+
             context.commit('SET_USER',{
                 token: null,
                 userId: null,
-                tokenExpiration: null
             })
         }
     },

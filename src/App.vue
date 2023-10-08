@@ -11,6 +11,15 @@ import TheHeader from './components/layout/TheHeader.vue';
 export default{
     components:{
         TheHeader
+    },
+    mounted(){
+      const tokenExpiration = localStorage.getItem('tokenExpiration')
+      const expiresIn = +tokenExpiration - new Date().getTime()
+    
+      if(expiresIn < 0){
+        this.$store.dispatch('authStore/logout')
+      }
+
     }
 }
 </script>
